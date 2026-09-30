@@ -1,0 +1,14 @@
+{
+  "name": "weekend-gacha",
+  "version": "0.2.0",
+  "private": true,
+  "description": "週末景點扭蛋機 — 用 TDX 觀光資料隨機抽親子景點（PWA，放 GitHub Pages）",
+  "type": "module",
+  "engines": { "node": ">=22.9" },
+  "scripts": {
+    "build:data": "node --env-file-if-exists=.env scripts/build-data.js",
+    "start": "node --env-file-if-exists=.env server.js",
+    "test": "node --test",
+    "coverage": "node --test --experimental-test-coverage"
+  }
+}

@@ -1,0 +1,5 @@
+.claude/HANDOFF.md
+.env
+node_modules/
+# 由 npm run build:data / GitHub Actions 產生，不進版控
+public/data/

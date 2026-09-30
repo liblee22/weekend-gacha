@@ -1,0 +1,58 @@
+name: Build data & deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # 每週一 03:00（台灣時間）更新景點資料
+    - cron: '0 19 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Test
+        run: npm test
+
+      - name: Build attraction data from TDX
+        env:
+          TDX_CLIENT_ID: ${{ secrets.TDX_CLIENT_ID }}
+          TDX_CLIENT_SECRET: ${{ secrets.TDX_CLIENT_SECRET }}
+          # 某縣市這次抓失敗時，沿用線上現有那份
+          PREVIOUS_DATA_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/data
+        run: npm run build:data
+
+      - name: Stamp service worker version
+        run: sed -i "s/const VERSION = 'dev'/const VERSION = '${GITHUB_SHA::8}'/" public/sw.js
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

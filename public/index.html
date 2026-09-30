@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff4e2">
+  <meta name="description" content="這個週末去哪裡？轉一下，隨機抽一個親子景點。">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="景點扭蛋">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="format-detection" content="telephone=no">
+  <title>週末景點扭蛋機</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">這個週末去哪裡？</p>
+      <h1>週末景點<br>扭蛋機</h1>
+    </header>
+
+    <section class="controls" aria-label="抽獎設定">
+      <label class="field">
+        <span class="field-label">在哪個縣市？</span>
+        <select id="city" disabled><option>載入中…</option></select>
+      </label>
+      <fieldset class="field">
+        <legend class="field-label">想玩什麼？</legend>
+        <div class="chips" id="category">
+          <label class="chip"><input type="radio" name="category" value="all" checked><span>都可以</span></label>
+          <label class="chip"><input type="radio" name="category" value="nature"><span>🌳 大自然</span></label>
+          <label class="chip"><input type="radio" name="category" value="play"><span>🎈 動手玩</span></label>
+          <label class="chip"><input type="radio" name="category" value="culture"><span>🏯 文化藝術</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend class="field-label">多遠都可以？</legend>
+        <div class="chips" id="distance"></div>
+        <p class="hint" id="origin-hint"></p>
+      </fieldset>
+    </section>
+
+    <section class="machine" id="machine" aria-label="扭蛋機">
+      <div class="dome">
+        <div class="capsules" id="capsules" aria-hidden="true"></div>
+        <div class="ticker" id="ticker" aria-hidden="true"></div>
+      </div>
+      <div class="body">
+        <button class="knob" id="spin" type="button" disabled>
+          <span class="knob-grip" aria-hidden="true"></span>
+          <span class="knob-label">轉！</span>
+        </button>
+        <div class="slot" aria-hidden="true"><span class="drop" id="drop"></span></div>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <article class="result" id="result" hidden>
+      <figure class="photo" id="photo">
+        <img id="photo-img" alt="" loading="lazy" referrerpolicy="no-referrer">
+      </figure>
+      <div class="result-body">
+        <p class="result-eyebrow">抽到了！</p>
+        <h2 id="spot-name"></h2>
+        <ul class="tags" id="spot-tags"></ul>
+        <p class="summary" id="spot-summary"></p>
+        <dl class="facts" id="spot-facts"></dl>
+        <iframe class="map" id="spot-map" title="景點地圖" loading="lazy"></iframe>
+        <div class="actions">
+          <a class="btn btn-primary" id="spot-nav" target="_blank" rel="noopener noreferrer">帶我去 →</a>
+          <button class="btn btn-fav" id="fav" type="button" aria-pressed="false">☆ 收藏</button>
+          <a class="btn" id="spot-web" target="_blank" rel="noopener noreferrer">官方網站</a>
+          <button class="btn" id="again" type="button">再轉一次</button>
+        </div>
+      </div>
+    </article>
+
+    <section class="favorites" id="favorites" hidden aria-labelledby="fav-title">
+      <h2 class="fav-title" id="fav-title">⭐ 收藏的景點 <span class="fav-count" id="fav-count"></span></h2>
+      <ul class="fav-list" id="fav-list"></ul>
+      <p class="hint">收藏只存在這支手機／這台電腦的瀏覽器裡。</p>
+    </section>
+
+    <footer class="credit">
+      景點資料來源：交通部 TDX 運輸資料流通服務平臺（觀光署觀光資訊資料庫）<br>
+      <span id="data-updated"></span>
+    </footer>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
